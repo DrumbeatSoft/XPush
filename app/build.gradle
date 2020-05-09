@@ -105,24 +105,25 @@ dependencies {
     implementation deps.rx_android
     implementation 'com.github.xuexiangjys:RxUtil2:1.1.5'
 
-    implementation project(path: ':keeplive')
-    implementation project(path: ':xpush-core')
-    implementation project(path: ':xpush-jpush')
-    implementation project(path: ':xpush-umeng')
-    implementation project(path: ':xpush-huawei')
-    implementation project(path: ':xpush-xiaomi')
-    implementation project(path: ':xpush-xg')
-    implementation project(path: ':xpush-oppo')
+//    implementation project(path: ':keeplive')
+//    implementation project(path: ':xpush-core')
+//    implementation project(path: ':xpush-jpush')
+//    implementation project(path: ':xpush-umeng')
+//    implementation project(path: ':xpush-huawei')
+//    implementation project(path: ':xpush-xiaomi')
+//    implementation project(path: ':xpush-xg')
+//    implementation project(path: ':xpush-oppo')
 
-//    //XPush核心库（必须添加）
-//    implementation 'com.github.gitHubAtom.XPush:xpush-core:1.0.0'
-//    //XPush保活库（可选）
-//    implementation 'com.github.gitHubAtom.XPush:keeplive:1.0.0'
-//    //XPush三方推送集成库（选择性添加）
-//    implementation 'com.github.gitHubAtom.XPush:xpush-jpush:1.0.0'
-//    implementation 'com.github.gitHubAtom.XPush:xpush-umeng:1.0.0'
-//    implementation 'com.github.gitHubAtom.XPush:xpush-huawei:1.0.0'
-//    implementation 'com.github.gitHubAtom.XPush:xpush-xiaomi:1.0.0'
-//    implementation 'com.github.gitHubAtom.XPush:xpush-xg:1.0.0'
+    //XPush核心库（必须添加）DrumbeatSoft
+    implementation 'com.github.githubAtom.XPush:xpush-core:1.0.01'
+    //XPush保活库（可选）
+    implementation 'com.github.githubAtom.XPush:keeplive:1.0.01'
+    //XPush三方推送集成库（选择性添加）
+    implementation 'com.github.githubAtom.XPush:xpush-jpush:1.0.01'
+    implementation 'com.github.githubAtom.XPush:xpush-umeng:1.0.01'
+    implementation 'com.github.githubAtom.XPush:xpush-huawei:1.0.01'
+    implementation 'com.github.githubAtom.XPush:xpush-xiaomi:1.0.01'
+    implementation 'com.github.githubAtom.XPush:xpush-xg:1.0.01'
+    implementation 'com.github.githubAtom.XPush:xpush-oppo:1.0.01'
 
 }
