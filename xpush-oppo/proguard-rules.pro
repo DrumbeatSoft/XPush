@@ -20,5 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--dontwarn com.xiaomi.**
--keep class * extends com.xiaomi.mipush.sdk.PushMessageReceiver{*;}
+-keep public class * extends android.app.Service
+-keep class com.heytap.msp.** { *;}
