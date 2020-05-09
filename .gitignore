@@ -1,5 +1,6 @@
 *.iml
 .gradle
+keystore
 /LocalRepository
 /keystores
 /local.properties

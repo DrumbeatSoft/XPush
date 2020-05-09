@@ -24,6 +24,7 @@ import com.xuexiang.xpush.core.IPushClient;
 import com.xuexiang.xpush.core.IPushInitCallback;
 import com.xuexiang.xpush.huawei.HuaweiPushClient;
 import com.xuexiang.xpush.jpush.JPushClient;
+import com.xuexiang.xpush.oppo.OppoPushClient;
 import com.xuexiang.xpush.umeng.UMengPushClient;
 import com.xuexiang.xpush.xg.XGPushClient;
 import com.xuexiang.xpush.xiaomi.XiaoMiPushClient;
@@ -85,6 +86,8 @@ public final class PushPlatformUtils {
                 case XGPushClient.XGPUSH_PLATFORM_CODE:
                     XPush.init(application, new XGPushClient());
                     break;
+                case OppoPushClient.OPPOPUSH_PLATFORM_CODE:
+                    XPush.init(application, new OppoPushClient());
                 default:
                     break;
             }
@@ -117,6 +120,8 @@ public final class PushPlatformUtils {
                 return new XiaoMiPushClient();
             case XGPushClient.XGPUSH_PLATFORM_CODE:
                 return new XGPushClient();
+            case OppoPushClient.OPPOPUSH_PLATFORM_CODE:
+                return new OppoPushClient();
             default:
                 return new JPushClient();
         }

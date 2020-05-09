@@ -263,6 +263,14 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 <meta-data
     android:name="XGPUSH_ACCESS_KEY"
     android:value="A7Q26I8SH7LV" />
+
+<!--oppo推送静态注册-->
+<meta-data
+    android:name="OPPOPUSH_APPKEY"
+    android:value="bf39531e59634188a380af6021129ccc" />
+<meta-data
+    android:name="OPPOPUSH_SECRET"
+    android:value="27bd7eb895c94d0a8ba35619b3f44ecd" />
 ```
 
 4.在Application中初始化XPush
@@ -473,7 +481,7 @@ xpush://com.xuexiang.xpush/notification?title=这是一个通知&content=这是�
 [极光推送](https://www.jiguang.cn/) | JPush | 1000 | xpush-jpush | com.xuexiang.xpush.jpush.JPushClient
 [友盟推送](https://www.umeng.com/push) | UMengPush | 1001 | xpush-umeng | com.xuexiang.xpush.umeng.UMengPushClient
 [华为推送](https://developer.huawei.com/consumer/cn/service/hms/pushservice.html) | HuaweiPush | 1002 | xpush-huawei | com.xuexiang.xpush.huawei.HuaweiPushClient
-[小米推送](https://dev.mi.com/console/appservice/push.html) | MIPush | 1003 | xpush-xiaomi | com.xuexiang.xpush.xiaomi.XiaoMiPushClient
+[小米推送](https://dev.mi.com/console/appservice/push.html) | MIPush | 1003 | xpush-xiaomi | com.xuexiang.xpush.xiaomi.OppoMiPushClient
 [信鸽推送](https://xg.qq.com/) | XGPush | 1004 | xpush-xg | com.xuexiang.xpush.xg.XGPushClient
 
 除此之外，如果你使用MQTT协议来做消息推送的话，我也同样提供了案例给你：[XPush-MQTT](https://github.com/xuexiangjys/XPush-MQTT)
@@ -756,6 +764,10 @@ CONNECTED | 12 | 已连接
 
 # 小米推送
 -keep class * extends com.xiaomi.mipush.sdk.PushMessageReceiver{*;}
+
+# oppo推送
+1.-keep public class * extends android.app.Service
+2.-keep class com.heytap.msp.** { *;}
 
 ```
 

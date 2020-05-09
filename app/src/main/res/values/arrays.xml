@@ -24,6 +24,7 @@
         <item>华为推送(HuaweiPush)</item>
         <item>小米推送(MIPush)</item>
         <item>信鸽推送(XGPush)</item>
+        <item>oppo推送(OPPOGPush)</item>
     </string-array>
 
     <integer-array name="push_platform_code_entry">
@@ -32,6 +33,7 @@
         <item>1002</item>
         <item>1003</item>
         <item>1004</item>
+        <item>1005</item>
     </integer-array>
 
 

@@ -40,6 +40,7 @@ import com.xuexiang.xpage.PageConfiguration;
 import com.xuexiang.xpage.model.PageInfo;
 import com.xuexiang.xpush.XPush;
 import com.xuexiang.xpush.core.dispatcher.impl.Android26PushDispatcherImpl;
+import com.xuexiang.xpush.notify.NotificationUtils;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.app.AppUtils;
 import com.xuexiang.xutil.common.StringUtils;
@@ -131,6 +132,7 @@ public class MyApp extends Application {
                     public void onWorking() {
                         Log.e("xuexiang", "onWorking");
                     }
+
                     /**
                      * 服务终止
                      * 由于服务可能会被多次终止，该方法可能重复调用，需同onWorking配套使用，如注册和注销broadcast
@@ -153,13 +155,16 @@ public class MyApp extends Application {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //Android8.0静态广播注册失败解决方案一：动态注册
-//            XPush.registerPushReceiver(new CustomPushReceiver());
+            XPush.registerPushReceiver(new CustomPushReceiver());
 
             //Android8.0静态广播注册失败解决方案二：修改发射器
-            XPush.setIPushDispatcher(new Android26PushDispatcherImpl(CustomPushReceiver.class));
+//            XPush.setIPushDispatcher(new Android26PushDispatcherImpl(CustomPushReceiver.class));
         }
 
         XPush.register();
+        NotificationUtils.addChannel("djlz", "单据流转", "用于单据流转通知");
+        NotificationUtils.addChannel("xttz", "系统通知", "用于系统类消息通知用户");
+
     }
 
     /**
@@ -193,7 +198,6 @@ public class MyApp extends Application {
 
     /**
      * 获取当前进程名称
-     *
      */
     public String getCurrentProcessName() {
         int currentProcessId = Process.myPid();

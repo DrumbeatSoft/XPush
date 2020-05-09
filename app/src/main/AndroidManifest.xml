@@ -73,7 +73,7 @@
             android:value="default_developer" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="a32109db64ebe04e2430bb01" />
+            android:value="20e5066576add090c623b369" />
 
         <!--友盟推送静态注册-->
         <meta-data
@@ -104,6 +104,14 @@
             android:name="XGPUSH_ACCESS_KEY"
             android:value="A7Q26I8SH7LV" />
 
+        <!--oppo推送静态注册-->
+        <meta-data
+            android:name="OPPOPUSH_APPKEY"
+            android:value="bf39531e59634188a380af6021129ccc" />
+        <meta-data
+            android:name="OPPOPUSH_SECRET"
+            android:value="27bd7eb895c94d0a8ba35619b3f44ecd" />
+
         <!--********************************XPush各家推送的SDK注册地方**************************************-->
         <!--name格式：XPush_[PlatformName]_[PlatformCode]-->
         <!--value格式：对应客户端实体类的全类名路径-->
@@ -132,6 +140,11 @@
         <meta-data
             android:name="XPush_XGPush_1004"
             android:value="@string/xpush_xg_client_name" />
+
+        <!--如果引入了xpush-oppo库-->
+        <meta-data
+            android:name="XPush_XGPush_1005"
+            android:value="@string/xpush_oppo_client_name" />
 
     </application>
 

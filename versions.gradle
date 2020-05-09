@@ -157,10 +157,10 @@ build_versions.build_tools = "28.0.3"
 ext.build_versions = build_versions
 
 def app_release = [:]
-app_release.storeFile = "../keystores/android.keystore"
-app_release.storePassword = "xuexiang"
-app_release.keyAlias = "android.keystore"
-app_release.keyPassword = "xuexiang"
+app_release.storeFile = "../keystore/keystore_drumbeat.jks"
+app_release.storePassword = "drumbeat"
+app_release.keyAlias = "DrumBeat"
+app_release.keyPassword = "drumbeat"
 
 ext.app_release = app_release
 
