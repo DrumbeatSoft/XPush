@@ -115,9 +115,9 @@ allprojects {
 dependencies {
   ...
   //推送核心库
-  implementation 'com.github.xuexiangjys.XPush:xpush-core:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:xpush-core:1.0.1'
   //推送保活库
-  implementation 'com.github.xuexiangjys.XPush:keeplive:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:keeplive:1.0.1'
 }
 ```
 
@@ -127,11 +127,12 @@ dependencies {
 dependencies {
   ...
   //选择你想要集成的推送库
-  implementation 'com.github.xuexiangjys.XPush:xpush-jpush:1.0.1'
-  implementation 'com.github.xuexiangjys.XPush:xpush-umeng:1.0.1'
-  implementation 'com.github.xuexiangjys.XPush:xpush-huawei:1.0.1'
-  implementation 'com.github.xuexiangjys.XPush:xpush-xiaomi:1.0.1'
-  implementation 'com.github.xuexiangjys.XPush:xpush-xg:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:xpush-jpush:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:xpush-umeng:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:xpush-huawei:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:xpush-xiaomi:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:xpush-xg:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:xpush-oppo:1.0.1'
 }
 ```
 
@@ -219,6 +220,11 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 <meta-data
     android:name="XPush_XGPush_1004"
     android:value="@string/xpush_xg_client_name" />
+
+<!--如果引入了xpush-oppo库-->
+<meta-data
+    android:name="XPush_OPPOPush_1005"
+    android:value="@string/xpush_oppo_client_name" />
 ```
 
 3.添加第三方AppKey和AppSecret.
@@ -766,8 +772,8 @@ CONNECTED | 12 | 已连接
 -keep class * extends com.xiaomi.mipush.sdk.PushMessageReceiver{*;}
 
 # oppo推送
-1.-keep public class * extends android.app.Service
-2.-keep class com.heytap.msp.** { *;}
+-keep public class * extends android.app.Service
+-keep class com.heytap.msp.** { *;}
 
 ```
 

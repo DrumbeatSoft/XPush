@@ -143,7 +143,7 @@
 
         <!--如果引入了xpush-oppo库-->
         <meta-data
-            android:name="XPush_XGPush_1005"
+            android:name="XPush_OPPOPush_1005"
             android:value="@string/xpush_oppo_client_name" />
 
     </application>

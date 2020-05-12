@@ -33,9 +33,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
     compileOnly deps.support.app_compat
     compileOnly project(path: ':xpush-core')
+//    implementation 'com.heytap.mcssdk:mcssdk:2.0.2'
 }
 
 apply from: "../JitPackUpload.gradle"
