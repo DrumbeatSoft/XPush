@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
@@ -111,6 +112,10 @@
         <meta-data
             android:name="OPPOPUSH_SECRET"
             android:value="27bd7eb895c94d0a8ba35619b3f44ecd" />
+
+        <meta-data
+            android:name="PROJECT_NAME"
+            android:value="test" />
 
         <!--********************************XPush各家推送的SDK注册地方**************************************-->
         <!--name格式：XPush_[PlatformName]_[PlatformCode]-->
