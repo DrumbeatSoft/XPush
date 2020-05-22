@@ -46,3 +46,5 @@ dependencies {
 //    implementation 'com.heytap.mcssdk:mcssdk:2.0.2'
     embed (name:'com.heytap.msp-push-2.1.0',ext:'aar')
 }
+
+apply from: "../JitPackUpload.gradle"
