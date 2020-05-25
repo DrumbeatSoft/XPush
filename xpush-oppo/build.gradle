@@ -16,7 +16,7 @@
  */
 
 apply plugin: 'com.android.library'
-//apply plugin: 'com.kezong.fat-aar'
+apply plugin: 'com.kezong.fat-aar'
 
 android {
     compileSdkVersion build_versions.target_sdk
@@ -39,12 +39,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
     compileOnly deps.support.app_compat
     compileOnly project(path: ':xpush-core')
     implementation 'com.alibaba:fastjson:1.2.67'
-//    implementation 'com.heytap.mcssdk:mcssdk:2.0.2'
-    implementation (name:'com.heytap.msp-push-2.1.0',ext:'aar')
+    releaseEmbed (name:'com.heytap.msp-push-2.1.0',ext:'aar')
 }
 
-//apply from: "../JitPackUpload.gradle"
+apply from: "../JitPackUpload.gradle"
