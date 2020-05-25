@@ -129,7 +129,7 @@ public class HttpUtils {
                         postFailed(callback, code, new Exception(dataBean.getMessage()));
                     }
                 } else {
-                    postFailed(callback, 0, new Exception("未知错误"));
+                    postFailed(callback, 0, new Exception("json 解析失败"));
                 }
             }
         });

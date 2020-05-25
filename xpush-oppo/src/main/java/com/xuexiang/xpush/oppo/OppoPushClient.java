@@ -38,6 +38,9 @@ import com.xuexiang.xpush.util.PushUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_ADD_TAG;
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_BIND_ALIAS;
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_DEL_TAG;
 import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_GET_ALIAS;
 import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_GET_TAG;
 import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_REGISTER;
@@ -62,11 +65,13 @@ public class OppoPushClient implements IPushClient {
     private static final String OPPOPUSH_APPKEY = "OPPOPUSH_APPKEY";
     private static final String OPPOPUSH_SECRET = "OPPOPUSH_SECRET";
     private static final String PROJECT_NAME = "PROJECT_NAME";
+    private static final String BASE_URL = "BASE_URL";
     private Context mContext;
     private String mSecret;
     private String mAppKey;
     private String registerId;
     private String projectName;
+    private String baseUrl;
 
     @Override
     public void init(Context context) {
@@ -78,12 +83,13 @@ public class OppoPushClient implements IPushClient {
             mSecret = metaData.getString(OPPOPUSH_SECRET).trim();
             mAppKey = metaData.getString(OPPOPUSH_APPKEY).trim();
             projectName = metaData.getString(PROJECT_NAME).trim();
+            baseUrl = metaData.getString(BASE_URL).trim();
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            PushLog.e("can't find OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME in AndroidManifest.xml");
+            PushLog.e("can't find OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME or BASE_URL in AndroidManifest.xml");
         } catch (NullPointerException e) {
             e.printStackTrace();
-            PushLog.e("can't find OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME in AndroidManifest.xml");
+            PushLog.e("can't find OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME or BASE_URL in AndroidManifest.xml");
         }
 
         HeytapPushManager.init(mContext, PushLog.isDebug());
@@ -120,7 +126,7 @@ public class OppoPushClient implements IPushClient {
 
     @Override
     public void getAlias() {
-        getDeviceTagAlias(0);
+        getDeviceTagAlias(TYPE_GET_ALIAS);
     }
 
     @Override
@@ -143,7 +149,7 @@ public class OppoPushClient implements IPushClient {
 
     @Override
     public void getTags() {
-        getDeviceTagAlias(1);
+        getDeviceTagAlias(TYPE_GET_TAG);
     }
 
     @Override
@@ -235,7 +241,7 @@ public class OppoPushClient implements IPushClient {
         params.setProjectName(projectName);
         params.setRegistrationId(registerId);
         params.setUpdateAlias(updateAlias);
-        updateDeviceTagAlias(params);
+        updateDeviceTagAlias(params, TYPE_BIND_ALIAS);
     }
 
     public void addTagList(List<String> addTagList) {
@@ -243,7 +249,7 @@ public class OppoPushClient implements IPushClient {
         params.setProjectName(projectName);
         params.setRegistrationId(registerId);
         params.setAddTagList(addTagList);
-        updateDeviceTagAlias(params);
+        updateDeviceTagAlias(params, TYPE_ADD_TAG);
     }
 
     public void deleteTagList(List<String> deleteTagList) {
@@ -251,47 +257,61 @@ public class OppoPushClient implements IPushClient {
         params.setProjectName(projectName);
         params.setRegistrationId(registerId);
         params.setDeleteTagList(deleteTagList);
-        updateDeviceTagAlias(params);
+        updateDeviceTagAlias(params, TYPE_DEL_TAG);
     }
 
-    private void updateDeviceTagAlias(TagAliasRequest params) {
-        HttpUtils.postJson(OppoPushAPI.updateDeviceTagAlias, params, new HttpUtils.Callback<BaseBean>() {
+    private void updateDeviceTagAlias(TagAliasRequest params, final int type) {
+        HttpUtils.postJson(baseUrl + OppoPushAPI.updateDeviceTagAlias, params, new HttpUtils.Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean dataBean) {
+                XPush.transmitCommandResult(mContext, type,
+                        RESULT_OK, null, dataBean.getMessage(), null);
             }
 
             @Override
             public void onFaileure(int code, Exception e) {
+                XPush.transmitCommandResult(mContext, type,
+                        RESULT_ERROR, null, null, code + e.getMessage());
+
             }
         });
     }
 
-    private void getDeviceTagAlias(final int tag) {
+    private void getDeviceTagAlias(final int type) {
         TagAliasRequest params = new TagAliasRequest();
         params.setProjectName(projectName);
         params.setRegistrationId(registerId);
-        HttpUtils.postJson(OppoPushAPI.getDeviceTagAlias, params, new HttpUtils.Callback<BaseBean<TagAlias>>() {
+        HttpUtils.postJson(baseUrl + OppoPushAPI.getDeviceTagAlias, params, new HttpUtils.Callback<BaseBean<TagAlias>>() {
             @Override
             public void onSuccess(BaseBean<TagAlias> dataBean) {
-                if (dataBean != null && dataBean.getData() != null) {
-                    if (tag == 1) {
-                        List<String> tags = dataBean.getData().getTagList();
-                        XPush.transmitCommandResult(mContext, TYPE_GET_TAG,
-                                RESULT_OK,
-                                PushUtils.collection2String(tags), null, null);
+                List<String> stringList = new ArrayList<>();
+                int result;
+                String error = null;
+                String extraMsg = null;
+                TagAlias data = dataBean.getData();
+
+                if (data != null) {
+                    result = RESULT_OK;
+                    if (type == TYPE_GET_TAG) {
+                        stringList.addAll(data.getTagList());
                     } else {
-                        String alias = dataBean.getData().getAlias();
-                        List<String> aliaList = new ArrayList<>();
-                        aliaList.add(alias);
-                        XPush.transmitCommandResult(mContext, TYPE_GET_ALIAS,
-                                RESULT_OK,
-                                PushUtils.collection2String(aliaList), null, null);
+                        String alias = data.getAlias();
+                        stringList.add(alias);
                     }
+                    extraMsg = dataBean.getMessage();
+                } else {
+                    result = RESULT_ERROR;
+                    error = "Code: " + dataBean.getCode() + " Message:" + dataBean.getMessage();
                 }
+
+                XPush.transmitCommandResult(mContext, type, result,
+                        PushUtils.collection2String(stringList), extraMsg, error);
             }
 
             @Override
             public void onFaileure(int code, Exception e) {
+                XPush.transmitCommandResult(mContext, type, RESULT_ERROR, null,
+                        null, "Code: " + code + " Message:" + e.getMessage());
             }
         });
     }
