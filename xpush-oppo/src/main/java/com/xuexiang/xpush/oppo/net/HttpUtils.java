@@ -3,9 +3,7 @@ package com.xuexiang.xpush.oppo.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xuexiang.xpush.logs.PushLog;

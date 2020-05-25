@@ -97,9 +97,9 @@ public class OppoPushClient implements IPushClient {
 
     @Override
     public void register() {
-        if (TextUtils.isEmpty(mSecret) || TextUtils.isEmpty(mAppKey)) {
+        if (TextUtils.isEmpty(mSecret) || TextUtils.isEmpty(mAppKey) || TextUtils.isEmpty(projectName) || TextUtils.isEmpty(baseUrl)) {
             throw new IllegalArgumentException("oppo push secret or appKey is not init," +
-                    "check you AndroidManifest.xml is has OPPOPUSH_SECRET or OPPOPUSH_APPKEY meta-data flag please");
+                    "check you AndroidManifest.xml is has OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME or BASE_URL meta-data flag please");
         }
 
         HeytapPushManager.register(mContext, mAppKey, mSecret, mPushCallback);
@@ -176,11 +176,11 @@ public class OppoPushClient implements IPushClient {
             }
             if (code == 0) {
                 registerId = s;
-                XPush.transmitCommandResult(mContext, TYPE_REGISTER, RESULT_OK, s, null, "注册成功 registerId:" + s);
+                XPush.transmitCommandResult(mContext, TYPE_REGISTER, RESULT_OK, registerId, "注册成功", null);
                 XPushManager.get().notifyConnectStatusChanged(CONNECTED);
             } else {
                 registerId = "";
-                XPush.transmitCommandResult(mContext, TYPE_REGISTER, RESULT_ERROR, null, null, "注册失败  code=" + code + ",msg=" + s);
+                XPush.transmitCommandResult(mContext, TYPE_REGISTER, RESULT_ERROR, null, "注册失败", "code=" + code + ",msg=" + s);
                 XPushManager.get().notifyConnectStatusChanged(DISCONNECT);
             }
         }
