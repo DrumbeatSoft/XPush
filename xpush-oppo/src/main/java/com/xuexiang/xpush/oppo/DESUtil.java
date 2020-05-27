@@ -197,14 +197,4 @@ public class DESUtil {
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void main(String[] args) {
-        String aaa = decrypt("p@ssw0rd123",
-                "GZMGaVUPUzgzvIf2iiDiL8mQTXL11qgQ9vCwNNaIBoFf7eXeSe0tLEHsP2G3n83km+/9xSh3PxE=");
-        System.out.println(aaa + "###############");
-        String bbb = "{ \"account\" : \"ZZZ126\", \"username\" : \"璧典寒\" }";
-        String ccc =
-                encrypt("drumbeatpush", "drumbeat2020!@123" + "-" + System.currentTimeMillis());
-        System.out.println(ccc);
-    }
 }

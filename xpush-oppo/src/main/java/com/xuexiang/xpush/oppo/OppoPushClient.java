@@ -102,7 +102,12 @@ public class OppoPushClient implements IPushClient {
                     "check you AndroidManifest.xml is has OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME or BASE_URL meta-data flag please");
         }
 
-        HeytapPushManager.register(mContext, mAppKey, mSecret, mPushCallback);
+        if (HeytapPushManager.isSupportPush()) {
+            HeytapPushManager.register(mContext, mAppKey, mSecret, mPushCallback);
+        } else {
+            XPush.transmitCommandResult(mContext, TYPE_REGISTER, RESULT_ERROR, null, "注册失败", "此设备不支持OPPOPush");
+            XPushManager.get().notifyConnectStatusChanged(DISCONNECT);
+        }
     }
 
     @Override
@@ -196,7 +201,6 @@ public class OppoPushClient implements IPushClient {
                 XPushManager.get().notifyConnectStatusChanged(DISCONNECT);
             } else {
                 XPush.transmitCommandResult(mContext, TYPE_UNREGISTER, RESULT_ERROR, null, null, "注销失败  code=" + code);
-
             }
         }
 

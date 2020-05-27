@@ -21,7 +21,10 @@ import android.content.Context;
 
 import com.heytap.msp.push.mode.DataMessage;
 import com.heytap.msp.push.service.CompatibleDataMessageCallbackService;
+import com.xuexiang.xpush.XPush;
 import com.xuexiang.xpush.logs.PushLog;
+
+import java.io.PushbackReader;
 
 /**
  * OPPO推送消息接收器
@@ -38,10 +41,14 @@ import com.xuexiang.xpush.logs.PushLog;
  * @since 2019-08-24 18:23
  */
 public class OppoPushCompatibleDataService extends CompatibleDataMessageCallbackService {
+    private static final String TAG = "OppoPush-";
+
     @Override
     public void processMessage(Context context, DataMessage dataMessage) {
         super.processMessage(context, dataMessage);
 
-        PushLog.d(dataMessage.toString());
+        PushLog.d(TAG + dataMessage.toString());
+        XPush.transmitMessage(context, dataMessage.getContent(), dataMessage.getDescription(), null);
+
     }
 }
