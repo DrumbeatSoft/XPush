@@ -32,7 +32,7 @@ import com.xuexiang.xpush.oppo.bean.BaseBean;
 import com.xuexiang.xpush.oppo.bean.TagAlias;
 import com.xuexiang.xpush.oppo.bean.TagAliasRequest;
 import com.xuexiang.xpush.oppo.net.HttpUtils;
-import com.xuexiang.xpush.oppo.net.OppoPushAPI;
+import com.xuexiang.xpush.oppo.net.OPushAPI;
 import com.xuexiang.xpush.util.PushUtils;
 
 import java.util.ArrayList;
@@ -58,12 +58,12 @@ import static com.xuexiang.xpush.core.annotation.ResultCode.RESULT_OK;
  * @since 2019-08-24 19:22
  */
 
-public class OppoPushClient implements IPushClient {
-    public static final String OPPOPUSH_PLATFORM_NAME = "OPPOPush";
-    public static final int OPPOPUSH_PLATFORM_CODE = 1005;
+public class OPushClient implements IPushClient {
+    public static final String OPUSH_PLATFORM_NAME = "OPush";
+    public static final int OPUSH_PLATFORM_CODE = 1005;
 
-    private static final String OPPOPUSH_APPKEY = "OPPOPUSH_APPKEY";
-    private static final String OPPOPUSH_SECRET = "OPPOPUSH_SECRET";
+    private static final String OPUSH_APPKEY = "OPUSH_APPKEY";
+    private static final String OPUSH_SECRET = "OPUSH_SECRET";
     private static final String PROJECT_NAME = "PROJECT_NAME";
     private static final String BASE_URL = "BASE_URL";
     private Context mContext;
@@ -80,16 +80,16 @@ public class OppoPushClient implements IPushClient {
         //读取OPPO对应的Secret和AppKey
         try {
             Bundle metaData = mContext.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA).metaData;
-            mSecret = metaData.getString(OPPOPUSH_SECRET).trim();
-            mAppKey = metaData.getString(OPPOPUSH_APPKEY).trim();
+            mSecret = metaData.getString(OPUSH_SECRET).trim();
+            mAppKey = metaData.getString(OPUSH_APPKEY).trim();
             projectName = metaData.getString(PROJECT_NAME).trim();
             baseUrl = metaData.getString(BASE_URL).trim();
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            PushLog.e("can't find OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME or BASE_URL in AndroidManifest.xml");
+            PushLog.e("can't find OPUSH_SECRET or OPUSH_APPKEY or PROJECT_NAME or BASE_URL in AndroidManifest.xml");
         } catch (NullPointerException e) {
             e.printStackTrace();
-            PushLog.e("can't find OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME or BASE_URL in AndroidManifest.xml");
+            PushLog.e("can't find OPUSH_SECRET or OPUSH_APPKEY or PROJECT_NAME or BASE_URL in AndroidManifest.xml");
         }
 
         HeytapPushManager.init(mContext, PushLog.isDebug());
@@ -99,13 +99,13 @@ public class OppoPushClient implements IPushClient {
     public void register() {
         if (TextUtils.isEmpty(mSecret) || TextUtils.isEmpty(mAppKey) || TextUtils.isEmpty(projectName) || TextUtils.isEmpty(baseUrl)) {
             throw new IllegalArgumentException("oppo push secret or appKey is not init," +
-                    "check you AndroidManifest.xml is has OPPOPUSH_SECRET or OPPOPUSH_APPKEY or PROJECT_NAME or BASE_URL meta-data flag please");
+                    "check you AndroidManifest.xml is has OPUSH_SECRET or OPUSH_APPKEY or PROJECT_NAME or BASE_URL meta-data flag please");
         }
 
         if (HeytapPushManager.isSupportPush()) {
             HeytapPushManager.register(mContext, mAppKey, mSecret, mPushCallback);
         } else {
-            XPush.transmitCommandResult(mContext, TYPE_REGISTER, RESULT_ERROR, null, "注册失败", "此设备不支持OPPOPush");
+            XPush.transmitCommandResult(mContext, TYPE_REGISTER, RESULT_ERROR, null, "注册失败", "此设备不支持OPush");
             XPushManager.get().notifyConnectStatusChanged(DISCONNECT);
         }
     }
@@ -115,7 +115,7 @@ public class OppoPushClient implements IPushClient {
         String token = getPushToken();
         if (!TextUtils.isEmpty(token)) {
             HeytapPushManager.unRegister();
-            PushUtils.deletePushToken(OPPOPUSH_PLATFORM_NAME);
+            PushUtils.deletePushToken(OPUSH_PLATFORM_NAME);
         }
     }
 
@@ -164,21 +164,18 @@ public class OppoPushClient implements IPushClient {
 
     @Override
     public int getPlatformCode() {
-        return OPPOPUSH_PLATFORM_CODE;
+        return OPUSH_PLATFORM_CODE;
     }
 
     @Override
     public String getPlatformName() {
-        return OPPOPUSH_PLATFORM_NAME;
+        return OPUSH_PLATFORM_NAME;
     }
 
     private ICallBackResultService mPushCallback = new ICallBackResultService() {
 
         @Override
         public void onRegister(int code, String s) {
-            if (!PushLog.isDebug()) {
-                return;
-            }
             if (code == 0) {
                 registerId = s;
                 XPush.transmitCommandResult(mContext, TYPE_REGISTER, RESULT_OK, registerId, "注册成功", null);
@@ -192,24 +189,16 @@ public class OppoPushClient implements IPushClient {
 
         @Override
         public void onUnRegister(int code) {
-            if (!PushLog.isDebug()) {
-                return;
-            }
-
             if (code == 0) {
-                XPush.transmitCommandResult(mContext, TYPE_UNREGISTER, RESULT_OK, null, "注销成功  code=" + code, null);
+                XPush.transmitCommandResult(mContext, TYPE_UNREGISTER, RESULT_OK, null, "注销成功", null);
                 XPushManager.get().notifyConnectStatusChanged(DISCONNECT);
             } else {
-                XPush.transmitCommandResult(mContext, TYPE_UNREGISTER, RESULT_ERROR, null, null, "注销失败  code=" + code);
+                XPush.transmitCommandResult(mContext, TYPE_UNREGISTER, RESULT_ERROR, null, "注销失败", "code=" + code);
             }
         }
 
         @Override
         public void onGetPushStatus(final int code, int status) {
-            if (!PushLog.isDebug()) {
-                return;
-            }
-
             if (code == 0 && status == 0) {
                 PushLog.d("Push状态正常  code=" + code + ",status=" + status);
             } else {
@@ -219,10 +208,6 @@ public class OppoPushClient implements IPushClient {
 
         @Override
         public void onGetNotificationStatus(final int code, final int status) {
-            if (!PushLog.isDebug()) {
-                return;
-            }
-
             if (code == 0 && status == 0) {
                 PushLog.d("通知状态正常  code=" + code + ",status=" + status);
             } else {
@@ -232,10 +217,6 @@ public class OppoPushClient implements IPushClient {
 
         @Override
         public void onSetPushTime(final int code, final String s) {
-            if (!PushLog.isDebug()) {
-                return;
-            }
-
             PushLog.d("SetPushTime  code=" + code + ",result:" + s);
         }
     };
@@ -265,7 +246,7 @@ public class OppoPushClient implements IPushClient {
     }
 
     private void updateDeviceTagAlias(TagAliasRequest params, final int type) {
-        HttpUtils.postJson(baseUrl + OppoPushAPI.updateDeviceTagAlias, params, new HttpUtils.Callback<BaseBean>() {
+        HttpUtils.postJson(baseUrl + OPushAPI.updateDeviceTagAlias, params, new HttpUtils.Callback<BaseBean>() {
             @Override
             public void onSuccess(BaseBean dataBean) {
                 XPush.transmitCommandResult(mContext, type,
@@ -275,8 +256,7 @@ public class OppoPushClient implements IPushClient {
             @Override
             public void onFaileure(int code, Exception e) {
                 XPush.transmitCommandResult(mContext, type,
-                        RESULT_ERROR, null, null, code + e.getMessage());
-
+                        RESULT_ERROR, null, e.getMessage(), "code:" + code);
             }
         });
     }
@@ -285,13 +265,13 @@ public class OppoPushClient implements IPushClient {
         TagAliasRequest params = new TagAliasRequest();
         params.setProjectName(projectName);
         params.setRegistrationId(registerId);
-        HttpUtils.postJson(baseUrl + OppoPushAPI.getDeviceTagAlias, params, new HttpUtils.Callback<BaseBean<TagAlias>>() {
+        HttpUtils.postJson(baseUrl + OPushAPI.getDeviceTagAlias, params, new HttpUtils.Callback<BaseBean<TagAlias>>() {
             @Override
             public void onSuccess(BaseBean<TagAlias> dataBean) {
                 List<String> stringList = new ArrayList<>();
                 int result;
                 String error = null;
-                String extraMsg = null;
+                String extraMsg = dataBean.getMessage();
                 TagAlias data = dataBean.getData();
 
                 if (data != null) {
@@ -302,10 +282,9 @@ public class OppoPushClient implements IPushClient {
                         String alias = data.getAlias();
                         stringList.add(alias);
                     }
-                    extraMsg = dataBean.getMessage();
                 } else {
                     result = RESULT_ERROR;
-                    error = "Code: " + dataBean.getCode() + " Message:" + dataBean.getMessage();
+                    error = "code: " + dataBean.getCode();
                 }
 
                 XPush.transmitCommandResult(mContext, type, result,
@@ -315,7 +294,7 @@ public class OppoPushClient implements IPushClient {
             @Override
             public void onFaileure(int code, Exception e) {
                 XPush.transmitCommandResult(mContext, type, RESULT_ERROR, null,
-                        null, "Code: " + code + " Message:" + e.getMessage());
+                        e.getMessage(), "code: " + code);
             }
         });
     }

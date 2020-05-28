@@ -40,8 +40,8 @@ import java.io.PushbackReader;
  * @author wangyu
  * @since 2019-08-24 18:23
  */
-public class OppoPushCompatibleDataService extends CompatibleDataMessageCallbackService {
-    private static final String TAG = "OppoPush-";
+public class OPushCompatibleDataService extends CompatibleDataMessageCallbackService {
+    private static final String TAG = "OPush-";
 
     @Override
     public void processMessage(Context context, DataMessage dataMessage) {

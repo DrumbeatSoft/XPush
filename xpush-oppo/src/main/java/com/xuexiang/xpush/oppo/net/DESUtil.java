@@ -1,4 +1,4 @@
-package com.xuexiang.xpush.oppo;
+package com.xuexiang.xpush.oppo.net;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;

@@ -38,8 +38,8 @@ import com.xuexiang.xpush.logs.PushLog;
  * @author wangyu
  * @since 2019-08-24 18:23
  */
-public class OppoPushDataService extends DataMessageCallbackService {
-    private static final String TAG = "OppoPush-";
+public class OPushDataService extends DataMessageCallbackService {
+    private static final String TAG = "OPush-";
     @Override
     public void processMessage(Context context, DataMessage dataMessage) {
         super.processMessage(context, dataMessage);

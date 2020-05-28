@@ -17,7 +17,7 @@
 
 <resources>
 
-    <string name="xpush_oppo_client_name">com.xuexiang.xpush.oppo.OppoPushClient</string>
+    <string name="xpush_oppo_client_name">com.xuexiang.xpush.oppo.OPushClient</string>
 
     <string name="oppo_register_success">Register push success.</string>
     <string name="oppo_register_fail">Register push fail for %1$s.</string>

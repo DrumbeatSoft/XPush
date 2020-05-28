@@ -7,7 +7,6 @@ import android.os.Handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xuexiang.xpush.logs.PushLog;
-import com.xuexiang.xpush.oppo.DESUtil;
 import com.xuexiang.xpush.oppo.bean.BaseBean;
 
 import java.io.ByteArrayOutputStream;
