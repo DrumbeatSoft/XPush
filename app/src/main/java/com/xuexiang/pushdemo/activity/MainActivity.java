@@ -23,6 +23,7 @@ import android.os.Bundle;
 
 import com.xuexiang.pushdemo.fragment.MainFragment;
 import com.xuexiang.xpage.base.XPageActivity;
+import com.xuexiang.xpush.AppBadgeUtils;
 import com.xuexiang.xpush.notify.NotificationUtils;
 
 public class MainActivity extends XPageActivity {
@@ -31,6 +32,11 @@ public class MainActivity extends XPageActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         openPage(MainFragment.class);
+
+        /**
+         * 设置APP图标未读数量，目前只实现了 OPPO、vivo 需要申请角标权限
+         */
+        AppBadgeUtils.setAppBadge(this,1);
 
         if (!NotificationUtils.isNotifyPermissionOpen(this)) {
             new AlertDialog.Builder(this)

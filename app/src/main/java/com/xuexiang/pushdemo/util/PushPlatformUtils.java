@@ -24,14 +24,13 @@ import com.xuexiang.xpush.core.IPushClient;
 import com.xuexiang.xpush.core.IPushInitCallback;
 import com.xuexiang.xpush.huawei.HuaweiPushClient;
 import com.xuexiang.xpush.jpush.JPushClient;
-import com.xuexiang.xpush.oppo.OppoPushClient;
+import com.xuexiang.xpush.oppo.OPushClient;
 import com.xuexiang.xpush.umeng.UMengPushClient;
+import com.xuexiang.xpush.util.RomUtils;
+import com.xuexiang.xpush.vivo.VPushClient;
 import com.xuexiang.xpush.xg.XGPushClient;
 import com.xuexiang.xpush.xiaomi.XiaoMiPushClient;
-import com.xuexiang.xutil.system.RomUtils;
 
-import static com.xuexiang.xutil.system.RomUtils.SYS_EMUI;
-import static com.xuexiang.xutil.system.RomUtils.SYS_MIUI;
 
 /**
  * 推送平台初始化工具
@@ -57,11 +56,14 @@ public final class PushPlatformUtils {
             XPush.init(application, new IPushInitCallback() {
                 @Override
                 public boolean onInitPush(int platformCode, String platformName) {
-                    String romName = RomUtils.getRom().getRomName();
-                    if (romName.equals(SYS_EMUI)) {
+                    if (RomUtils.isHuawei()) {
                         return platformCode == HuaweiPushClient.HUAWEI_PUSH_PLATFORM_CODE && platformName.equals(HuaweiPushClient.HUAWEI_PUSH_PLATFORM_NAME);
-                    } else if (romName.equals(SYS_MIUI)) {
+                    } else if (RomUtils.isXiaomi()) {
                         return platformCode == XiaoMiPushClient.MIPUSH_PLATFORM_CODE && platformName.equals(XiaoMiPushClient.MIPUSH_PLATFORM_NAME);
+                    } else if (RomUtils.isOppo()) {
+                        return platformCode == OPushClient.OPUSH_PLATFORM_CODE && platformName.equals(OPushClient.OPUSH_PLATFORM_NAME);
+                    } else if (RomUtils.isVivo()) {
+                        return platformCode == VPushClient.VPUSH_PLATFORM_CODE && platformName.equals(VPushClient.VPUSH_PLATFORM_NAME);
                     } else {
                         return platformCode == JPushClient.JPUSH_PLATFORM_CODE && platformName.equals(JPushClient.JPUSH_PLATFORM_NAME);
                     }
@@ -86,8 +88,12 @@ public final class PushPlatformUtils {
                 case XGPushClient.XGPUSH_PLATFORM_CODE:
                     XPush.init(application, new XGPushClient());
                     break;
-                case OppoPushClient.OPPOPUSH_PLATFORM_CODE:
-                    XPush.init(application, new OppoPushClient());
+                case OPushClient.OPUSH_PLATFORM_CODE:
+                    XPush.init(application, new OPushClient());
+                    break;
+                case VPushClient.VPUSH_PLATFORM_CODE:
+                    XPush.init(application, new VPushClient());
+                    break;
                 default:
                     break;
             }
@@ -120,8 +126,10 @@ public final class PushPlatformUtils {
                 return new XiaoMiPushClient();
             case XGPushClient.XGPUSH_PLATFORM_CODE:
                 return new XGPushClient();
-            case OppoPushClient.OPPOPUSH_PLATFORM_CODE:
-                return new OppoPushClient();
+            case OPushClient.OPUSH_PLATFORM_CODE:
+                return new OPushClient();
+            case VPushClient.VPUSH_PLATFORM_CODE:
+                return new VPushClient();
             default:
                 return new JPushClient();
         }

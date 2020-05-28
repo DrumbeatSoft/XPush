@@ -107,15 +107,33 @@
 
         <!--oppo推送静态注册-->
         <meta-data
-            android:name="OPPOPUSH_APPKEY"
+            android:name="OPUSH_APPKEY"
             android:value="bf39531e59634188a380af6021129ccc" />
         <meta-data
-            android:name="OPPOPUSH_SECRET"
+            android:name="OPUSH_SECRET"
             android:value="27bd7eb895c94d0a8ba35619b3f44ecd" />
-
         <meta-data
             android:name="PROJECT_NAME"
             android:value="test" />
+        <meta-data
+            android:name="BASE_URL"
+            android:value="http://192.168.70.99:20001/push" />
+
+        <!--vivo推送静态注册-->
+        <meta-data
+            android:name="com.vivo.push.api_key"
+            android:value="xxxxxxxx"/>
+        <meta-data
+            android:name="com.vivo.push.app_id"
+            android:value="xxxx"/>
+
+        <!--oppo、vivo启动图标角标-->
+        <meta-data
+            android:name="APPLICATION_ID"
+            android:value="${applicationId}" />
+        <meta-data
+            android:name="LAUNCHER_CLASS_PATH"
+            android:value="com.xuexiang.pushdemo.activity.MainActivity" />
 
         <!--********************************XPush各家推送的SDK注册地方**************************************-->
         <!--name格式：XPush_[PlatformName]_[PlatformCode]-->
@@ -148,8 +166,13 @@
 
         <!--如果引入了xpush-oppo库-->
         <meta-data
-            android:name="XPush_OPPOPush_1005"
+            android:name="XPush_OPush_1005"
             android:value="@string/xpush_oppo_client_name" />
+
+        <!--如果引入了xpush-vivo库-->
+        <meta-data
+            android:name="XPush_OPush_1006"
+            android:value="@string/xpush_vivo_client_name" />
 
     </application>
 
