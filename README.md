@@ -223,7 +223,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
 <!--如果引入了xpush-oppo库-->
 <meta-data
-    android:name="XPush_OPPOPush_1005"
+    android:name="XPush_OPush_1005"
     android:value="@string/xpush_oppo_client_name" />
 ```
 
@@ -272,10 +272,10 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
 <!--oppo推送静态注册-->
 <meta-data
-    android:name="OPPOPUSH_APPKEY"
+    android:name="OPUSH_APPKEY"
     android:value="bf39531e59634188a380af6021129ccc" />
 <meta-data
-    android:name="OPPOPUSH_SECRET"
+    android:name="OPUSH_SECRET"
     android:value="27bd7eb895c94d0a8ba35619b3f44ecd" />
 ```
 
