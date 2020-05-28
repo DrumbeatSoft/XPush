@@ -171,7 +171,7 @@
 
         <!--如果引入了xpush-vivo库-->
         <meta-data
-            android:name="XPush_OPush_1006"
+            android:name="XPush_VPush_1006"
             android:value="@string/xpush_vivo_client_name" />
 
     </application>
