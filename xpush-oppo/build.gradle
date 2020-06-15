@@ -25,6 +25,19 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion build_versions.target_sdk
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 
     lintOptions {
@@ -32,18 +45,18 @@ android {
     }
 
     repositories {
-        flatDir{
+        flatDir {
             dirs 'libs'
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     compileOnly deps.support.app_compat
     compileOnly project(path: ':xpush-core')
     implementation 'com.alibaba:fastjson:1.2.67'
-    releaseEmbed (name:'com.heytap.msp-push-2.1.0',ext:'aar')
+    releaseEmbed(name: 'com.heytap.msp-push-2.1.0', ext: 'aar')
 }
 
 apply from: "../JitPackUpload.gradle"
