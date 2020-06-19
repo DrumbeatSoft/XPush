@@ -225,6 +225,11 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 <meta-data
     android:name="XPush_OPush_1005"
     android:value="@string/xpush_oppo_client_name" />
+
+<!--如果引入了xpush-vivo库-->
+<meta-data
+     android:name="XPush_VPush_1006"
+     android:value="@string/xpush_vivo_client_name" />
 ```
 
 3.添加第三方AppKey和AppSecret.
