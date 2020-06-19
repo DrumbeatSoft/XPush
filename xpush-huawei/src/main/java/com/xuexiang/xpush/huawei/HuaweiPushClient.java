@@ -21,10 +21,9 @@ import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.huawei.android.hms.agent.HMSAgent;
-import com.huawei.android.hms.agent.common.handler.ConnectHandler;
-import com.huawei.android.hms.agent.push.handler.DeleteTokenHandler;
-import com.huawei.android.hms.agent.push.handler.GetTokenHandler;
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.aaid.HmsInstanceId;
+import com.huawei.hms.common.ApiException;
 import com.xuexiang.xpush.XPush;
 import com.xuexiang.xpush.core.IPushClient;
 import com.xuexiang.xpush.logs.PushLog;
@@ -45,6 +44,7 @@ import static com.xuexiang.xpush.core.annotation.ResultCode.RESULT_OK;
  */
 public class HuaweiPushClient implements IPushClient {
     public static final String HUAWEI_PUSH_PLATFORM_NAME = "HuaweiPush";
+    public static final String HUAWEIPUSH_APPID = "HUAWEIPUSH_APPID";
     public static final int HUAWEI_PUSH_PLATFORM_CODE = 1002;
 
     private Application mApplication;
@@ -61,7 +61,7 @@ public class HuaweiPushClient implements IPushClient {
         } else {
             mApplication = (Application) context.getApplicationContext();
         }
-        HMSAgent.init(mApplication);
+
     }
 
     /**
@@ -69,22 +69,22 @@ public class HuaweiPushClient implements IPushClient {
      */
     @Override
     public void register() {
-        HMSAgent.connect(new ConnectHandler() {
+        new Thread() {
             @Override
-            public void onConnect(int rst) {
-                PushLog.d("huawei-push connect onConnect=" + rst);
-                if (rst == HMSAgent.AgentResultCode.HMSAGENT_SUCCESS) {
-                    HMSAgent.Push.getToken(new GetTokenHandler() {
-                        @Override
-                        public void onResult(int rst) {
-                            PushLog.d("huawei-push getToken onResult=" + rst);
-                        }
-                    });
-                } else {
-                    XPush.transmitCommandResult(mApplication, TYPE_REGISTER, RESULT_ERROR, String.valueOf(rst), null, "huawei-push register error code : " + rst);
+            public void run() {
+                try {
+                    String appId = AGConnectServicesConfig.fromContext(mApplication).getString("client/app_id");
+                    String token = HmsInstanceId.getInstance(mApplication).getToken(appId, "HCM");
+                    PushLog.d("get token:" + token);
+                    if (!TextUtils.isEmpty(token)) {
+                        PushUtils.savePushToken(HUAWEI_PUSH_PLATFORM_NAME, token);
+                        XPush.transmitCommandResult(mApplication, TYPE_REGISTER, RESULT_OK, token, null, null);
+                    }
+                } catch (ApiException e) {
+                    e.printStackTrace();
                 }
             }
-        });
+        }.start();
     }
 
     /**
@@ -92,20 +92,20 @@ public class HuaweiPushClient implements IPushClient {
      */
     @Override
     public void unRegister() {
-        final String token = getPushToken();
-        if (!TextUtils.isEmpty(token)) {
-            HMSAgent.Push.deleteToken(token, new DeleteTokenHandler() {
-                @Override
-                public void onResult(int rst) {
-                    PushLog.d("huawei-push deleteToken onResult=" + rst);
-                    if (rst == HMSAgent.AgentResultCode.HMSAGENT_SUCCESS) {
-                        XPush.transmitCommandResult(mApplication, TYPE_UNREGISTER, RESULT_OK, null, null, null);
-                    } else {
-                        XPush.transmitCommandResult(mApplication, TYPE_UNREGISTER, RESULT_ERROR, null, null, "huawei-push unRegister error code : " + rst);
-                    }
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    String appId = AGConnectServicesConfig.fromContext(mApplication).getString("client/app_id");
+                    HmsInstanceId.getInstance(mApplication).deleteToken(appId, "HCM");
+                    PushLog.d( "deleteToken success.");
+                    XPush.transmitCommandResult(mApplication, TYPE_UNREGISTER, RESULT_OK, null, null, null);
+                } catch (ApiException e) {
+                    XPush.transmitCommandResult(mApplication, TYPE_UNREGISTER, RESULT_ERROR, null, null, "huawei-push unRegister error code : " + e);
+                    PushLog.d("huawei-push deleteToken onResult=" + e);
                 }
-            });
-        }
+            }
+        }.start();
     }
 
     /**
@@ -187,4 +187,5 @@ public class HuaweiPushClient implements IPushClient {
     public String getPlatformName() {
         return HUAWEI_PUSH_PLATFORM_NAME;
     }
+
 }

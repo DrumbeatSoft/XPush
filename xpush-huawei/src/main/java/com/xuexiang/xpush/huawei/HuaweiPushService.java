@@ -20,6 +20,7 @@ package com.xuexiang.xpush.huawei;
 import android.content.Context;
 
 import com.huawei.hms.support.api.push.PushReceiver;
+import com.huawei.hms.support.api.push.service.HmsMsgService;
 import com.xuexiang.xpush.XPush;
 import com.xuexiang.xpush.logs.PushLog;
 import com.xuexiang.xpush.util.PushUtils;
@@ -38,16 +39,9 @@ import static com.xuexiang.xpush.huawei.HuaweiPushClient.HUAWEI_PUSH_PLATFORM_NA
  * @author xuexiang
  * @since 2019-08-23 15:21
  */
-public class HuaweiPushReceiver extends PushReceiver {
+public class HuaweiPushService extends HmsMsgService {
 
     private static final String TAG = "HuaweiPush-";
-
-    @Override
-    public void onToken(Context context, String token) {
-        PushLog.d(TAG + "[onToken]:" + token);
-        PushUtils.savePushToken(HUAWEI_PUSH_PLATFORM_NAME, token);
-        XPush.transmitCommandResult(context, TYPE_REGISTER, RESULT_OK, token, null, null);
-    }
 
     @Override
     public void onPushState(Context context, boolean pushState) {

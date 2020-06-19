@@ -36,9 +36,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly deps.support.app_compat
     compileOnly project(path: ':xpush-core')
-
-    implementation 'com.huawei.android.hms:push:2.6.3.306'
-    implementation 'com.huawei.android.hms:base:2.6.3.306'
+    implementation 'com.huawei.hms:push:4.0.4.301'
 }
 
 apply from: "../JitPackUpload.gradle"
