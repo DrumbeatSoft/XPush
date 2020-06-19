@@ -21,5 +21,8 @@
 #-renamesourcefileattribute SourceFile
 
 -keep public class * extends android.app.Service
--keep class com.heytap.msp.** { *;}
+-keep class com.heytap.** { *;}
+-keep class com.heytap.** { *;}
+-keep class com.mcs.** { *;}
+
 -keep class com.xuexiang.xpush.oppo.** { *;}
