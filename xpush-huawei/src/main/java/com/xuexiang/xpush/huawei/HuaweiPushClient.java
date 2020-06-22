@@ -26,11 +26,20 @@ import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.common.ApiException;
 import com.xuexiang.xpush.XPush;
 import com.xuexiang.xpush.core.IPushClient;
+import com.xuexiang.xpush.core.XPushManager;
 import com.xuexiang.xpush.logs.PushLog;
 import com.xuexiang.xpush.util.PushUtils;
 
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_ADD_TAG;
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_BIND_ALIAS;
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_DEL_TAG;
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_GET_ALIAS;
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_GET_TAG;
 import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_REGISTER;
+import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_UNBIND_ALIAS;
 import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_UNREGISTER;
+import static com.xuexiang.xpush.core.annotation.ConnectStatus.CONNECTED;
+import static com.xuexiang.xpush.core.annotation.ConnectStatus.DISCONNECT;
 import static com.xuexiang.xpush.core.annotation.ResultCode.RESULT_ERROR;
 import static com.xuexiang.xpush.core.annotation.ResultCode.RESULT_OK;
 
@@ -44,9 +53,7 @@ import static com.xuexiang.xpush.core.annotation.ResultCode.RESULT_OK;
  */
 public class HuaweiPushClient implements IPushClient {
     public static final String HUAWEI_PUSH_PLATFORM_NAME = "HuaweiPush";
-    public static final String HUAWEIPUSH_APPID = "HUAWEIPUSH_APPID";
     public static final int HUAWEI_PUSH_PLATFORM_CODE = 1002;
-
     private Application mApplication;
 
     /**
@@ -61,7 +68,6 @@ public class HuaweiPushClient implements IPushClient {
         } else {
             mApplication = (Application) context.getApplicationContext();
         }
-
     }
 
     /**
@@ -79,9 +85,15 @@ public class HuaweiPushClient implements IPushClient {
                     if (!TextUtils.isEmpty(token)) {
                         PushUtils.savePushToken(HUAWEI_PUSH_PLATFORM_NAME, token);
                         XPush.transmitCommandResult(mApplication, TYPE_REGISTER, RESULT_OK, token, null, null);
+                        XPushManager.get().notifyConnectStatusChanged(CONNECTED);
+                    } else {
+                        XPush.transmitCommandResult(mApplication, TYPE_REGISTER, RESULT_ERROR, null, null, "获取token失败");
+                        XPushManager.get().notifyConnectStatusChanged(DISCONNECT);
                     }
                 } catch (ApiException e) {
                     e.printStackTrace();
+                    XPush.transmitCommandResult(mApplication, TYPE_REGISTER, RESULT_ERROR, null, null, e.getMessage());
+                    XPushManager.get().notifyConnectStatusChanged(DISCONNECT);
                 }
             }
         }.start();
@@ -98,10 +110,11 @@ public class HuaweiPushClient implements IPushClient {
                 try {
                     String appId = AGConnectServicesConfig.fromContext(mApplication).getString("client/app_id");
                     HmsInstanceId.getInstance(mApplication).deleteToken(appId, "HCM");
-                    PushLog.d( "deleteToken success.");
+                    PushLog.d("deleteToken success.");
                     XPush.transmitCommandResult(mApplication, TYPE_UNREGISTER, RESULT_OK, null, null, null);
+                    XPushManager.get().notifyConnectStatusChanged(DISCONNECT);
                 } catch (ApiException e) {
-                    XPush.transmitCommandResult(mApplication, TYPE_UNREGISTER, RESULT_ERROR, null, null, "huawei-push unRegister error code : " + e);
+                    XPush.transmitCommandResult(mApplication, TYPE_UNREGISTER, RESULT_ERROR, null, null, e.getMessage());
                     PushLog.d("huawei-push deleteToken onResult=" + e);
                 }
             }
@@ -115,7 +128,7 @@ public class HuaweiPushClient implements IPushClient {
      */
     @Override
     public void bindAlias(String alias) {
-
+        error(TYPE_BIND_ALIAS);
     }
 
     /**
@@ -125,7 +138,7 @@ public class HuaweiPushClient implements IPushClient {
      */
     @Override
     public void unBindAlias(String alias) {
-
+        error(TYPE_UNBIND_ALIAS);
     }
 
     /**
@@ -133,7 +146,7 @@ public class HuaweiPushClient implements IPushClient {
      */
     @Override
     public void getAlias() {
-
+        error(TYPE_GET_ALIAS);
     }
 
     /**
@@ -143,7 +156,7 @@ public class HuaweiPushClient implements IPushClient {
      */
     @Override
     public void addTags(String... tag) {
-
+        error(TYPE_ADD_TAG);
     }
 
     /**
@@ -153,7 +166,7 @@ public class HuaweiPushClient implements IPushClient {
      */
     @Override
     public void deleteTags(String... tag) {
-
+        error(TYPE_DEL_TAG);
     }
 
     /**
@@ -161,7 +174,12 @@ public class HuaweiPushClient implements IPushClient {
      */
     @Override
     public void getTags() {
+        error(TYPE_GET_TAG);
+    }
 
+    private void error(int type) {
+        XPush.transmitCommandResult(mApplication, type, RESULT_ERROR, null,
+                null, "HuaweiPush不支持此功能");
     }
 
     /**

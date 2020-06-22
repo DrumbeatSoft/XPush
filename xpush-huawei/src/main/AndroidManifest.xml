@@ -17,34 +17,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xuexiang.xpush.huawei">
 
-    <!--HMS-SDK引导升级HMS功能，访问OTA服务器需要网络权限 | HMS-SDK upgrade HMS Feature, access to OTA server requires network privileges-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--HMS-SDK引导升级HMS功能，保存下载的升级包需要SD卡写权限 | HMS-SDK upgrade HMS Feature, save downloaded upgrade pack requires SD card Write permission-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--检测网络状态 | Detecting Network status-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--检测wifi状态 | Detecting WiFi status-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--获取用户手机的IMEI，用来唯一的标识设备。 | Gets the IMEI of the user's phone, used to uniquely identify the device.-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- Android O版本调用安装需要使用该权限 -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
-    <!-- 接收PUSH TOKEN的广播以及PUSH消息需要定义该权限${applicationId}要替换上您应用的包名 -->
-    <permission
-        android:name="${applicationId}.permission.PROCESS_PUSH_MSG"
-        android:protectionLevel="signature" />
-
-    <!--接收PUSH TOKEN的广播以及PUSH消息需要定义该权限${applicationId}要替换上您应用的包名 -->
-    <uses-permission android:name="${applicationId}.permission.PROCESS_PUSH_MSG" />
-
-
     <application
         android:allowBackup="false"
         android:supportsRtl="true">
 
+        <meta-data
+            android:name="push_kit_auto_init_enabled"
+            android:value="true" />
+
         <service
-            android:name=".YourHmsMessageService"
+            android:name=".HuaweiPushService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
@@ -52,6 +34,5 @@
         </service>
 
     </application>
-
 
 </manifest>
