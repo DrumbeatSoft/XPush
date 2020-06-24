@@ -1,11 +1,11 @@
 # XPush
 
-	在[XPush](https://github.com/xuexiangjys/XPush)的基础上，新增一些推送服务和功能
-	1.集成oppo推送
-	2.集成vivo推送
-	3.重新集成华为推送
-	4.增加自定义角标功能
-	5.自定义通知工具增加渠道设置功能
+在[XPush](https://github.com/xuexiangjys/XPush)的基础上，新增一些推送服务和功能
+1.集成oppo推送
+2.集成vivo推送
+3.重新集成华为推送
+4.增加自定义角标功能
+5.自定义通知工具增加渠道设置功能
 	
 ## 快速集成指南
 	
@@ -161,7 +161,6 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 3.添加第三方AppKey和AppSecret.
 
 这里的AppKey和AppSecret需要我们到各自的推送平台上注册应用后获得。注意如果使用了xpush-xiaomi,那么需要在AndroidManifest.xml添加小米的AppKey和AppSecret（注意下面的“\ ”必须加上，否则获取到的是float而不是String，就会导致id和key获取不到正确的数据），如果使用华为需要[配置签名证书指纹](https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/Preparations#h2-1575616896242)，里边包含AppKey所以不需要再AndroidManifest.xml配置AppKey，另外华为推送还需要[配置HMS Core SDK的maven仓地址](https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/Preparations#h2-1584706939740)
-
 
 ```
 <!--极光推送静态注册-->
