@@ -15,11 +15,7 @@ allprojects {
     }
 }
 ```
-    华为推送还需要在APP项目路径根目录下配置签名证书指纹agconnect-services.json文件、在build.gradle条件gradle插件
-```
-apply plugin: 'com.android.application'
-apply plugin: 'com.huawei.agconnect'
-```
+
 2.添加XPush主要依赖:
 
 ```
@@ -59,7 +55,12 @@ buildscript {
     }
 }
 ```
-还需要[配置签名证书指纹](https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/Preparations#h2-1575616896242)，里边包含AppKey所以不需要再AndroidManifest.xml配置AppKey
+还需要在APP项目路径根目录下[配置签名证书指纹](https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/Preparations#h2-1575616896242)agconnect-services.json文件里边包含AppKey所以不需要再AndroidManifest.xml配置AppKey，在build.gradle条件gradle插件
+```
+apply plugin: 'com.android.application'
+apply plugin: 'com.huawei.agconnect'
+```
+
 
 ### 初始化XPush配置
 
