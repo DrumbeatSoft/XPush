@@ -17,6 +17,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xuexiang.xpush.huawei">
 
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE " />
+
     <application
         android:allowBackup="false"
         android:supportsRtl="true">
