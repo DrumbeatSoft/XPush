@@ -1,11 +1,6 @@
 # XPush
 
-在[XPush](https://github.com/xuexiangjys/XPush)的基础上，新增一些推送服务和功能
-1.集成oppo推送
-2.集成vivo推送
-3.重新集成华为推送
-4.增加自定义角标功能
-5.自定义通知工具增加渠道设置功能
+在[XPush](https://github.com/xuexiangjys/XPush)的基础上，新增oppo推送、vivo推送，重新集成华为推送，增加自定义角标功能，自定义通知工具增加渠道设置功能
 	
 ## 快速集成指南
 	
