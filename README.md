@@ -8,16 +8,6 @@
 
 1.先在项目根目录的 build.gradle 的 repositories 添加:
 ```
-buildscript {
-    repositories {
-        //如果使用华为推送的话
-        maven { url "http://developer.huawei.com/repo/" }
-    }
-    dependencies {
-        //如果使用华为推送的话
-        classpath 'com.huawei.agconnect:agcp:1.3.1.300'
-    }
-}
 allprojects {
     repositories {
         ...
@@ -56,6 +46,20 @@ dependencies {
   implementation 'com.github.DrumbeatSoft.XPush:xpush-oppo:1.0.1'
 }
 ```
+4.华为的比较个性，如果使用华为还需要在项目根目录的 build.gradle 的 repositories、dependencies 添加
+```
+buildscript {
+    repositories {
+        //如果使用华为推送的话
+        maven { url "http://developer.huawei.com/repo/" }
+    }
+    dependencies {
+        //如果使用华为推送的话
+        classpath 'com.huawei.agconnect:agcp:1.3.1.300'
+    }
+}
+```
+还需要[配置签名证书指纹](https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/Preparations#h2-1575616896242)，里边包含AppKey所以不需要再AndroidManifest.xml配置AppKey
 
 ### 初始化XPush配置
 
@@ -155,7 +159,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
 3.添加第三方AppKey和AppSecret.
 
-这里的AppKey和AppSecret需要我们到各自的推送平台上注册应用后获得。注意如果使用了xpush-xiaomi,那么需要在AndroidManifest.xml添加小米的AppKey和AppSecret（注意下面的“\ ”必须加上，否则获取到的是float而不是String，就会导致id和key获取不到正确的数据），如果使用华为需要[配置签名证书指纹](https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/Preparations#h2-1575616896242)，里边包含AppKey所以不需要再AndroidManifest.xml配置AppKey，另外华为推送还需要[配置HMS Core SDK的maven仓地址](https://developer.huawei.com/consumer/cn/doc/development/HMS-Guides/Preparations#h2-1584706939740)
+这里的AppKey和AppSecret需要我们到各自的推送平台上注册应用后获得。注意如果使用了xpush-xiaomi,那么需要在AndroidManifest.xml添加小米的AppKey和AppSecret（注意下面的“\ ”必须加上，否则获取到的是float而不是String，就会导致id和key获取不到正确的数据）
 
 ```
 <!--极光推送静态注册-->
