@@ -22,9 +22,9 @@ allprojects {
 dependencies {
   ...
   //推送核心库
-  implementation 'com.github.DrumbeatSoft.XPush:xpush-core:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:xpush-core:1.0.16'
   //推送保活库
-  implementation 'com.github.DrumbeatSoft.XPush:keeplive:1.0.1'
+  implementation 'com.github.DrumbeatSoft.XPush:keeplive:1.0.16'
 }
 ```
 
@@ -34,12 +34,12 @@ dependencies {
 dependencies {
   ...
   //选择你想要集成的推送库
-  implementation 'com.github.DrumbeatSoft.XPush:xpush-jpush:1.0.1'
-  implementation 'com.github.DrumbeatSoft.XPush:xpush-umeng:1.0.1'
-  implementation 'com.github.DrumbeatSoft.XPush:xpush-huawei:1.0.1'
-  implementation 'com.github.DrumbeatSoft.XPush:xpush-xiaomi:1.0.1'
-  implementation 'com.github.DrumbeatSoft.XPush:xpush-xg:1.0.1'
-  implementation 'com.github.DrumbeatSoft.XPush:xpush-oppo:1.0.1'
+    implementation 'com.github.DrumbeatSoft.XPush:xpush-core:1.0.16'
+    implementation 'com.github.DrumbeatSoft.XPush:xpush-oppo:1.0.16'
+    implementation 'com.github.DrumbeatSoft.XPush:xpush-jpush:1.0.16'
+    implementation 'com.github.DrumbeatSoft.XPush:xpush-vivo:1.0.16'
+    implementation 'com.github.DrumbeatSoft.XPush:xpush-xiaomi:1.0.16'
+    implementation 'com.github.DrumbeatSoft.XPush:xpush-huawei:1.0.16'
 }
 ```
 4.华为的比较个性，如果使用华为还需要在项目根目录的 build.gradle 的 repositories、dependencies 添加
@@ -125,22 +125,22 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 <!--如果引入了xpush-jpush库-->
 <meta-data
     android:name="XPush_JPush_1000"
-    android:value="com.xuexiang.xpush.jpush.JPushClient" />
+    android:value="@string/xpush_jpush_client_name" />
 
 <!--如果引入了xpush-umeng库-->
 <meta-data
     android:name="XPush_UMengPush_1001"
-    android:value="com.xuexiang.xpush.umeng.UMengPushClient" />
+    android:value="@string/xpush_umeng_client_name" />
     
 <!--如果引入了xpush-huawei库-->
 <meta-data
     android:name="XPush_HuaweiPush_1002"
-    android:value="com.xuexiang.xpush.huawei.HuaweiPushClient" />
+    android:value="@string/xpush_huawei_client_name" />
 
 <!--如果引入了xpush-xiaomi库-->
 <meta-data
     android:name="XPush_MIPush_1003"
-    android:value="com.xuexiang.xpush.xiaomi.XiaoMiPushClient" />
+    android:value="@string/xpush_xiaomi_client_name" />
     
 <!--如果引入了xpush-xg库-->
 <meta-data
@@ -190,18 +190,18 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 <!--信鸽推送静态注册-->
 <meta-data
     android:name="XGPUSH_ACCESS_ID"
-    android:value="2100343759" />
+    android:value="123456" />
 <meta-data
     android:name="XGPUSH_ACCESS_KEY"
-    android:value="A7Q26I8SH7LV" />
+    android:value="abcde" />
 
 <!--oppo推送静态注册-->
 <meta-data
     android:name="OPUSH_APPKEY"
-    android:value="bf39531e59634188a380af6021129ccc" />
+    android:value="abcde" />
 <meta-data
     android:name="OPUSH_SECRET"
-    android:value="27bd7eb895c94d0a8ba35619b3f44ecd" />
+    android:value="adcde" />
 ```
 
 4.在Application中初始化XPush
