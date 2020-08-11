@@ -24,10 +24,12 @@ import com.vivo.push.sdk.OpenClientPushMessageReceiver;
 import com.xuexiang.xpush.XPush;
 import com.xuexiang.xpush.core.XPushManager;
 import com.xuexiang.xpush.logs.PushLog;
+import com.xuexiang.xpush.util.PushUtils;
 
 import static com.xuexiang.xpush.core.annotation.CommandType.TYPE_REGISTER;
 import static com.xuexiang.xpush.core.annotation.ConnectStatus.CONNECTED;
 import static com.xuexiang.xpush.core.annotation.ResultCode.RESULT_OK;
+import static com.xuexiang.xpush.vivo.VPushClient.VPUSH_PLATFORM_NAME;
 
 /**
  * vivo推送消息接收器
@@ -58,6 +60,7 @@ public class VPushReceiver extends OpenClientPushMessageReceiver {
     @Override
     public void onReceiveRegId(Context context, String s) {
         PushLog.d(TAG + "[onReceiveRegId]:" + s);
+        PushUtils.savePushToken(VPUSH_PLATFORM_NAME, s);
         XPush.transmitCommandResult(context, TYPE_REGISTER, RESULT_OK, s, "注册成功", null);
         XPushManager.get().notifyConnectStatusChanged(CONNECTED);
     }

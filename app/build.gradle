@@ -10,7 +10,7 @@ android {
         applicationId "com.drumbeat.example"
         minSdkVersion 19
         targetSdkVersion build_versions.target_sdk
-        versionCode 2
+        versionCode 200
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

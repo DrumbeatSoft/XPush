@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 
 import com.xuexiang.xpush.logs.PushLog;
 import com.xuexiang.xpush.util.RomUtils;
@@ -21,6 +23,7 @@ import java.lang.reflect.Method;
  * @date 2020/4/20
  */
 public class AppBadgeUtils {
+    private static int mCurrentTotalCount = -1;
 
     /**
      * 设置应用桌面角标
@@ -50,6 +53,11 @@ public class AppBadgeUtils {
             PushLog.e("can't find APPLICATION_ID or LAUNCHER_CLASS_PATH in AndroidManifest.xml");
         }
 
+        if (mCurrentTotalCount == count) {
+            return; //如果当前数据没发生变化，尽量不要重复设置
+        }
+        mCurrentTotalCount = count;
+
         if (RomUtils.isOppo()) {
             setOppo(context, count);
         } else if (RomUtils.isVivo()) {
@@ -65,6 +73,7 @@ public class AppBadgeUtils {
      * @param context
      * @param count
      */
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     private static void setOppo(Context context, int count) {
         try {
             Bundle extras = new Bundle();
